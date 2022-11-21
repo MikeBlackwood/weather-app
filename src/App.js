@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import SearchCard from "./components/SearchCard";
+import WeatherController from "./components/WeatherController";
 
-function App() {
+const queryClient = new QueryClient();
+
+const App = () => {
+  const [searchfield, setSearch] = useState("");
+
+  const updateSearchField = (value) => {
+    console.log(value);
+    setSearch(value);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="main-container">
+        <div className="container mx-auto h-max">
+          <SearchCard
+            searchVal={searchfield}
+            updateSearchField={updateSearchField}
+          />
+          {searchfield !== "" ? (
+            <WeatherController location={searchfield} />
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+    </QueryClientProvider>
   );
-}
-
+};
 export default App;
