@@ -7,8 +7,7 @@ const SearchCard = ({ searchfield, updateSearchField }) => {
     setValue(e.target.value);
   };
   const submitSearchValue = () => {
-    let searchVal = val.replace(/\s+/g, "");
-    updateSearchField(searchVal);
+    updateSearchField(val);
   };
   return (
     <div className="w-120 h-32 pl-10 pr-10 bg-gray rounded-md text-white">
