@@ -3,10 +3,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import WeatherDetails from "./WeatherDetails";
 import WeatherCard from "./WeatherCard";
-import { isVisible } from "@testing-library/user-event/dist/utils";
 
 const WeatherController = ({ reset, location }) => {
-  const [dateForDetails, setDateForDetails] = useState(null);
   const { isLoading, error, data, isFetching } = useQuery(
     ["fetchWeather"],
     () =>
@@ -16,7 +14,7 @@ const WeatherController = ({ reset, location }) => {
         )
         .then((res) => res.data)
   );
-
+  if (isFetching) return <div className="text-white"> fetching</div>;
   if (isLoading) return <div>Loading</div>;
   if (error) return <div>Error occured</div>;
 
@@ -27,41 +25,37 @@ const WeatherController = ({ reset, location }) => {
     point.dt_txt.includes(timeExpected)
   );
 
-  const getDetails = (date) => {
-    setDateForDetails(date);
-  };
   const forecastListData = filteredData.map((point) => {
-    return <WeatherCard data={point} getDetails={getDetails} />;
+    return (
+      <WeatherCard
+        data={point}
+        details={weatherDataSorted[point.dt_txt.split(" ")[0]]}
+      />
+    );
   });
 
   return (
     <>
-      <div className=" pt-5  text-white">
-        <div className="flex-1">
-          <button className="" onClick={reset}>
-            Back
-          </button>
-        </div>
-        <div className="flex-1 ">
-          <h1 className="text-center"> Weather in {location} </h1>
-        </div>
-        <div className="flex-1"></div>
-      </div>
-      <div className="flex flex-wrap flex-row">
-        <div className="flex-1 w-1/3">
-          <div className="flex flex-wrap flex-col justify-evenly">
-            {forecastListData}
+      <div className="pt-5 ml-20 mr-20 text-white">
+        <div className="flex" style={{ height: "10%" }}>
+          <div className="flex-1">
+            <button onClick={reset}>Back</button>
           </div>
+          <div className="flex-1">
+            <h1 className="text-center"> Weather in {location} </h1>
+          </div>
+          <div className="flex-1"></div>
         </div>
-        <div className="flex-2 w-2/3 text-white">
-          {dateForDetails ? (
-            <WeatherDetails
-              date={dateForDetails}
-              weatherList={weatherDataSorted[dateForDetails]}
-            />
-          ) : (
-            <></>
-          )}
+      </div>
+      <div
+        className="flex flex-wrap flex-col lg:h-9/10 sm:h-auto"
+        style={{ height: "90%", backgroundColor: "black" }}
+      >
+        <div
+          className=" flex sm:flex-col flex-wrap lg:flex-row justify-evenly lg:h-full sm:h-auto "
+          style={{ backgroundColor: "black" }}
+        >
+          {forecastListData}
         </div>
       </div>
     </>
@@ -70,37 +64,15 @@ const WeatherController = ({ reset, location }) => {
 
 const parseData = (data) => {
   let dateToWeatherMap = {};
-  const mapped = data.list.forEach((weather) => {
+  data.list.forEach((weather) => {
     let date = weather.dt_txt.split(" ");
-
     if (dateToWeatherMap.hasOwnProperty(date[0])) {
       dateToWeatherMap[date[0]].push(weather);
     } else {
       dateToWeatherMap[date[0]] = [weather];
     }
   });
-  // reparseDataForDayForecast(dateToWeatherMap);
   return dateToWeatherMap;
 };
-
-// const reparseDataForDayForecast = (weatherObject) => {
-//   let listOfForcast = []
-//   Object.keys(weatherObject).forEach((key, index) => {
-//       let minTemp;
-//       let maxTemp;
-//       weatherObject[key].map((weatherPoint) => {
-//          if (minTemp == undefined ){
-//           minTemp = weatherPoint.main.temp_min
-//          } else{
-//             minTemp = Math.min(minTemp, weatherObject.main.temp_min)
-//          }
-//       })
-//       const weatherForTheDay = {
-//         min_temp: minTemp,
-//         maxTemp: maxTemp,
-
-//       }
-//   });
-// };
 
 export default WeatherController;

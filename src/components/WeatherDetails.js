@@ -1,6 +1,6 @@
 import WeatherDetailRow from "./WeatherDetailRow";
-const WeatherDetails = (props) => {
-  const renderList = props.weatherList.map((weather) => {
+const WeatherDetails = ({ weatherList }) => {
+  const renderList = weatherList.map((weather) => {
     return <WeatherDetailRow weather={weather} />;
   });
 
@@ -14,13 +14,7 @@ const WeatherDetails = (props) => {
           <p className="">Description</p>
         </div>
         <div className="flex-1">
-          <p>Feels like</p>
-        </div>
-        <div className="flex-1">
-          <p>Min temprature</p>
-        </div>
-        <div className="flex-1">
-          <p>Max temprature</p>
+          <p>Temprature</p>
         </div>
       </div>
       <div className="w-auto">{renderList}</div>
