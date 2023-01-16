@@ -22,7 +22,6 @@ const SearchCard = ({ updateSearchField }) => {
         <div>
           <input
             className=" text-gray-dark rounded-md  py-2"
-            style={{ borderColor: "black", border: "2px" }}
             onChange={updateValue}
           />
           <button

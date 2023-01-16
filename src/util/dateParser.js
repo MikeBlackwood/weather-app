@@ -9,4 +9,17 @@ const converTime = (dateString) => {
   return time;
 };
 
-export default converTime;
+const getDayOfTheWeek = (dateString) => {
+  const integerToDay = {
+    0: "Sunday",
+    1: "Monday",
+    2: "Tuesday",
+    3: "Wednesday",
+    4: "Thursday",
+    5: "Friday",
+    6: "Saturday",
+  };
+  const date = new Date(dateString);
+  return `${integerToDay[date.getDay()]}`;
+};
+export { converTime, getDayOfTheWeek };

@@ -1,11 +1,9 @@
-import converTime from "../util/dateParser";
+import { converTime } from "../util/dateParser";
 
 const WeatherDetailRow = ({ weather }) => {
   const weatherInfo = weather.weather[0];
   const main = weather.main;
-
   const date = converTime(weather.dt_txt);
-  console.log(date);
   return (
     <div
       className="flex flex-row justify-evenly text-center h-auto"
@@ -18,7 +16,9 @@ const WeatherDetailRow = ({ weather }) => {
         <p>{weatherInfo.description}</p>
       </div>
       <div className="flex-1">
-        <p>{Math.round(main.temp_max)} F</p>
+        <p>
+          {Math.round(main.temp_max)} <span>&#176;</span> F
+        </p>
       </div>
     </div>
   );

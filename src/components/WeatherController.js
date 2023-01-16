@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import WeatherDetails from "./WeatherDetails";
 import WeatherCard from "./WeatherCard";
-
+import { GoArrowLeft } from "react-icons/go";
 const WeatherController = ({ reset, location }) => {
   const { isLoading, error, data, isFetching } = useQuery(
     ["fetchWeather"],
@@ -28,6 +28,7 @@ const WeatherController = ({ reset, location }) => {
   const forecastListData = filteredData.map((point) => {
     return (
       <WeatherCard
+        key={point.dt}
         data={point}
         details={weatherDataSorted[point.dt_txt.split(" ")[0]]}
       />
@@ -39,7 +40,11 @@ const WeatherController = ({ reset, location }) => {
       <div className="pt-5 ml-20 mr-20 text-white">
         <div className="flex" style={{ height: "10%" }}>
           <div className="flex-1">
-            <button onClick={reset}>Back</button>
+            <button onClick={reset}>
+              <span className="color-white text-lg">
+                <GoArrowLeft />
+              </span>
+            </button>
           </div>
           <div className="flex-1">
             <h1 className="text-center"> Weather in {location} </h1>
